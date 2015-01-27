@@ -70,8 +70,6 @@ function getPasswordUrl(url, callback, errorCallback) {
 
   var domain = link.hostname
 
-  console.log(domain)
-
   renderHost('Host: ' + domain)
 
   var x = new XMLHttpRequest()
@@ -83,15 +81,13 @@ function getPasswordUrl(url, callback, errorCallback) {
   x.onload = function() {
     var response = x.response
 
-    console.log(response)
-
     if (!response) {
       errorCallback('No response')
       return
     }
 
     if (response.error) {
-      console.error(response.error)
+      errorCallback(response.error)
       return
     }
 
