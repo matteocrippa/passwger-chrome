@@ -1,4 +1,4 @@
-<!doctype html>
+<!doctype html ng-app="passwger">
 <html>
   <head>
     <title>Passwger</title>
@@ -17,13 +17,25 @@
     </style>
 
     <script src="popup.js"></script>
+    <script src="angular.min.js"></script>
+    <script src="passwger.js"></script>
+
   </head>
-  <body>
+  <body ng-controller="PasswgerController as pss">
 
-    PASSWGER
+    <div id="locked" ng-show="pss.lock">
+      <input type="password" id="lockedPassword" ng-model="pss.lockedPassword" />
+      <button ng-click="pss.checkPassword()">unlock</button>
+    </div>
+    
+    <div id="unlocked" ng-hide="pss.lock">
+      
+      <div id="host"></div>
 
-    <div id="host"></div>
+      <div id="status"></div>
+      
+    </div>
 
-    <div id="status"></div>
+
   </body>
 </html>
