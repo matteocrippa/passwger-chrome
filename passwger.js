@@ -23,6 +23,26 @@
     }), function(newVal, oldVal){
       vm.populateList()
     })
+    
+    vm.getCurrentTabDomain = function(){
+      chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, function(tabs) {
+    var tab = tabs[0];
+    
+    var link = document.createElement('a')
+    link.setAttribute('href', url)
+
+    vm.host = link.hostname
+
+
+  });
+    }
+    
+    angular.element(document).ready(function () {
+      vm.getCurrentTabDomain()
+    });
 
     vm.populateList = function (){
       $log.log(vm.host)
