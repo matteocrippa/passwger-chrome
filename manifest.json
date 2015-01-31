@@ -13,8 +13,10 @@
     "js": ["jquery-1.11.2.min.js"],
     "matches": ["http://*/*", "https://*/*"]
     }],
-    "permissions": [
-      "activeTab",
-      "http://localhost:12358/*"
-    ]
-  }
+  "permissions": [
+    "activeTab",
+    "http://localhost:12358/*"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  
+}

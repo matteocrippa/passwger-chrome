@@ -1,5 +1,5 @@
-<!doctype html ng-app="passwger">
-<html>
+<!doctype html >
+<html ng-app="passwger">
   <head>
     <title>Passwger</title>
     <style>
@@ -27,13 +27,13 @@
       <input type="password" id="lockedPassword" ng-model="pss.lockedPassword" />
       <button ng-click="pss.checkPassword()">unlock</button>
     </div>
-    
+
     <div id="unlocked" ng-hide="pss.lock">
-      
+
       <div id="host"></div>
 
       <div id="status"></div>
-      
+
     </div>
 
 
