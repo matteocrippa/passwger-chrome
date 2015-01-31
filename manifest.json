@@ -15,8 +15,8 @@
     }],
   "permissions": [
     "activeTab",
+    "tabs",
     "http://localhost:12358/*"
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
-  
 }
