@@ -6,12 +6,12 @@
       body {
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
+        min-width: 250px;
       }
-      #status {
-        white-space: pre;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 400px;
+
+      .locked{
+        width: 100%;
+        text-align: center;
       }
     </style>
 
@@ -23,14 +23,14 @@
   </head>
   <body ng-controller="PasswgerController as pss">
 
-    <div id="locked" ng-show="pss.lock">
+    <div id="locked" ng-show="pss.lock" class="locked">
       <input type="password" id="lockedPassword" ng-model="pss.lockedPassword" />
       <button ng-click="pss.checkPassword()">unlock</button>
     </div>
 
     <div id="unlocked" ng-hide="pss.lock">
 
-      <input type="hidden" id="host" ng-model="pss.host" />
+      <h1>{{pss.host}}</h1>
 
       <ul ng-show="pss.domainPasswords">
         <li ng-repeat="entry in pss.domainPasswords">
