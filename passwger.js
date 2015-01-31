@@ -8,7 +8,7 @@
 
     vm.lock = true
     vm.passwords = []
-    vm.domainPasswords = []
+    vm.domainPasswords = null
 
 
     $scope.$watch(angular.bind(this, function() {
@@ -36,23 +36,25 @@
 
         vm.host = link.hostname
 
-      });
+      })
     }
 
     angular.element(document).ready(function() {
       vm.getCurrentTabDomain()
-    });
+    })
 
     vm.populateList = function() {
       vm.domainPasswords = $scope.find(vm.passwords, function(item) {
         return vm.host.indexOf(item.domain) != -1
       })
-      if(!$scope.isArray(vm.domainPasswords)){
+
+      $log.log(vm.domainPasswords)
+
+      if(vm.domainPasswords && !$scope.isArray(vm.domainPasswords)){
         tmp = vm.domainPasswords
         vm.domainPasswords = []
         vm.domainPasswords.push(tmp)
       }
-      $log.log(vm.domainPasswords)
     }
 
     vm.checkPassword = function() {

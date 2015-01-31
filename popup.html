@@ -32,11 +32,13 @@
 
       <input type="hidden" id="host" ng-model="pss.host" />
 
-      <ul>
+      <ul ng-show="pss.domainPasswords">
         <li ng-repeat="entry in pss.domainPasswords">
           {{ entry.name }}
         </li>
       </ul>
+
+      <em ng-hide="pss.domainPasswords">No password stored for this domain yet.</em>
 
     </div>
 
