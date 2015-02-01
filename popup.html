@@ -33,7 +33,7 @@
       <h1>{{pss.host}}</h1>
 
       <ul ng-show="pss.domainPasswords">
-        <li ng-repeat="entry in pss.domainPasswords">
+        <li ng-repeat="entry in pss.domainPasswords" ng-click="pss.injectPassword(entry.id)">
           {{ entry.name }}
         </li>
       </ul>
