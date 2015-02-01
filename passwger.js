@@ -38,6 +38,13 @@
 
       })
     }
+    
+    vm.injectPassword = function(item) {
+      angular.forEach(element.find('input'), function(node){ 
+        //dosomething(node)
+        $log.log(node.val())
+      })
+    }
 
     angular.element(document).ready(function() {
       vm.getCurrentTabDomain()
