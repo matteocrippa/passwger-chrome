@@ -40,10 +40,22 @@
     }
     
     vm.injectPassword = function(item) {
-      angular.forEach(element.find('input'), function(node){ 
-        //dosomething(node)
-        $log.log(node.val())
+      
+
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true
+      }, function(tabs) {
+
+        var tab = tabs[0];
+        
+        tab.executeScript({
+    code: 'document.body.style.backgroundColor="red"'
+  });
+
+
       })
+      
     }
 
     angular.element(document).ready(function() {
