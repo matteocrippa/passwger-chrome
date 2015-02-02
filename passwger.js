@@ -38,24 +38,31 @@
 
       })
     }
-    
-    vm.injectPassword = function(item) {
-      
 
-    chrome.tabs.query({
-        active: true,
-        currentWindow: true
-      }, function(tabs) {
+    vm.injectPassword = function(itemId) {
 
-        var tab = tabs[0];
-        
-        tab.executeScript({
-    code: 'document.body.style.backgroundColor="red"'
-  });
-
-
+      var item = $scope.find(vm.passwords, function(item) {
+        return item.id == itemId
       })
-      
+
+      //$log.log(item)
+
+      var src = 'var pArr = []; \
+      var pInputs = document.getElementsByTagName("input");\
+      for (var i=pInputs.length-1; i>0; i--){\
+        if(pInputs[i].type.toLowerCase() === "password"){\
+          pInputs[i].value = "'+item.password+'";\
+          pInputs[i-1].value = "'+item.username+'";\
+          break;\
+        }\
+      }'
+
+      //$log.log(src)
+
+      chrome.tabs.executeScript({
+        code: src
+      });
+
     }
 
     angular.element(document).ready(function() {
@@ -69,7 +76,7 @@
 
       $log.log(vm.domainPasswords)
 
-      if(vm.domainPasswords && !$scope.isArray(vm.domainPasswords)){
+      if (vm.domainPasswords && !$scope.isArray(vm.domainPasswords)) {
         tmp = vm.domainPasswords
         vm.domainPasswords = []
         vm.domainPasswords.push(tmp)
