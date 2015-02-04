@@ -81,7 +81,7 @@ for (var j=passwgerData.index;j>0;j--){\
         return vm.host.indexOf(item.domain) != -1
       })
 
-      $log.log(vm.domainPasswords)
+      //$log.log(vm.domainPasswords)
 
       if (vm.domainPasswords && !$scope.isArray(vm.domainPasswords)) {
         tmp = vm.domainPasswords
