@@ -47,15 +47,22 @@
 
       //$log.log(item)
 
-      var src = 'var pArr = []; \
-      var pInputs = document.getElementsByTagName("input");\
-      for (var i=pInputs.length-1; i>0; i--){\
-        if(pInputs[i].type.toLowerCase() === "password"){\
-          pInputs[i].value = "'+item.password+'";\
-          pInputs[i-1].value = "'+item.username+'";\
-          break;\
-        }\
-      }'
+      var src = 'var passwgerData = { inputs:  document.getElementByTagName("input"), index: -1 };\
+for (var i=passwgerData.inputs.length; i>0; i--){\
+  var item = passwgerData.inputs[i];\
+  if(item.type.toLowerCase() === "password"){\
+    item.value = "'+item.password+'";\
+    passwgerData.index = i;\
+    break;\
+  }\
+}\
+for (var j=passwgerData.index;j>0;j--){\
+  var item = passwgerData.inputs[j];\
+  if(item.type.toLowerCase() === "text"){\
+    item.value = "'+item.username+'";\
+    break;\
+  }\
+}'
 
       //$log.log(src)
 
