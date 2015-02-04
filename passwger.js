@@ -74,6 +74,12 @@ for (var j=passwgerData.index;j>0;j--){\
 
     angular.element(document).ready(function() {
       vm.getCurrentTabDomain()
+      
+      if(localStorage.passwgerExpiry > new Date().getTime()){
+        vm.passwords = JSON.parse(localStorage.passwgerData)
+      }else{
+        localStorage.passwgerData = null
+      }
     })
 
     vm.populateList = function() {
@@ -106,6 +112,8 @@ for (var j=passwgerData.index;j>0;j--){\
           } else {
             vm.lock = false
             vm.passwords = data.pwds
+            localStorage.passwgerData = JSON.parse(data.pwds)
+            localStorage.passwgerExpiry = new Date(System.currentTimeMillis()+5*60*1000).getTime()
           }
         })
         .error(function(data, status, headers, config) {
