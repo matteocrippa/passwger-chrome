@@ -10,15 +10,22 @@
     vm.passwords = []
     vm.domainPasswords = null
 
+    $scope.host = ''
 
-    $scope.$watch(angular.bind(this, function() {
-      return this.host
-    }), function(newVal, oldVal) {
+    if (localStorage.passwgerExpiry > new Date().getTime()) {
+      vm.lock = false
+      vm.passwords = JSON.parse(localStorage.passwgerData)
+    } else {
+      localStorage.passwgerData = null
+    }
+
+    $scope.$watch('host', function(){
+      //$log.log('host: '+$scope.host)
       vm.populateList()
     })
 
-    $scope.$watch(angular.bind(this, function() {
-      return this.passwords
+    $scope.$watch(angular.bind(vm, function() {
+      return vm.passwords
     }), function(newVal, oldVal) {
       vm.populateList()
     })
@@ -34,7 +41,9 @@
         var link = document.createElement('a')
         link.setAttribute('href', tab.url)
 
-        vm.host = link.hostname
+        $scope.host = link.hostname
+
+        $scope.$apply()
 
       })
     }
@@ -47,22 +56,29 @@
 
       //$log.log(item)
 
-      var src = 'var passwgerData = { inputs:  document.getElementByTagName("input"), index: -1 };\
-for (var i=passwgerData.inputs.length; i>0; i--){\
-  var item = passwgerData.inputs[i];\
-  if(item.type.toLowerCase() === "password"){\
-    item.value = "'+item.password+'";\
-    passwgerData.index = i;\
-    break;\
-  }\
-}\
-for (var j=passwgerData.index;j>0;j--){\
-  var item = passwgerData.inputs[j];\
-  if(item.type.toLowerCase() === "text"){\
-    item.value = "'+item.username+'";\
-    break;\
-  }\
-}'
+      var src = 'var passwgerData = {\
+        inputs:  document.getElementsByTagName("input"),\
+        index: -1\
+      };\
+      for (var i=passwgerData.inputs.length-1; i>0; i--){\
+        var item = passwgerData.inputs[i];\
+        if(item.type){\
+          if(item.type.toLowerCase() === "password"){\
+            item.value = "' + item.password + '";\
+            passwgerData.index = i-1;\
+            break;\
+          }\
+        }\
+      }\
+      for (var j=passwgerData.index;j>=0;j--){ \
+        var item = passwgerData.inputs[j];\
+        if(item.type){\
+          if(item.type.toLowerCase() === "text" || item.type.toLowerCase() === "email"){\
+            item.value = "' + item.username + '";\
+            break;\
+          }\
+        }\
+      }'
 
       //$log.log(src)
 
@@ -74,26 +90,27 @@ for (var j=passwgerData.index;j>0;j--){\
 
     angular.element(document).ready(function() {
       vm.getCurrentTabDomain()
-      
-      if(localStorage.passwgerExpiry > new Date().getTime()){
-        vm.passwords = JSON.parse(localStorage.passwgerData)
-      }else{
-        localStorage.passwgerData = null
-      }
+
     })
 
     vm.populateList = function() {
-      vm.domainPasswords = $scope.find(vm.passwords, function(item) {
-        return vm.host.indexOf(item.domain) != -1
-      })
 
-      //$log.log(vm.domainPasswords)
+      if($scope.host){
+        vm.domainPasswords = $scope.find(vm.passwords, function(item) {
+          return $scope.host.indexOf(item.domain) != -1
+        })
 
-      if (vm.domainPasswords && !$scope.isArray(vm.domainPasswords)) {
-        tmp = vm.domainPasswords
-        vm.domainPasswords = []
-        vm.domainPasswords.push(tmp)
+        //$log.log(vm.domainPasswords)
+
+        if (vm.domainPasswords && !$scope.isArray(vm.domainPasswords)) {
+          tmp = vm.domainPasswords
+          vm.domainPasswords = []
+          vm.domainPasswords.push(tmp)
+        }
       }
+
+      vm.host = $scope.host
+
     }
 
     vm.checkPassword = function() {
@@ -112,8 +129,8 @@ for (var j=passwgerData.index;j>0;j--){\
           } else {
             vm.lock = false
             vm.passwords = data.pwds
-            localStorage.passwgerData = JSON.parse(data.pwds)
-            localStorage.passwgerExpiry = new Date(System.currentTimeMillis()+5*60*1000).getTime()
+            localStorage.passwgerData = JSON.stringify(data.pwds)
+            localStorage.passwgerExpiry = new Date().getTime() + 5 * 60 * 1000
           }
         })
         .error(function(data, status, headers, config) {
