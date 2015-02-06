@@ -86,6 +86,7 @@
         code: src
       });
 
+      window.close()
     }
 
     angular.element(document).ready(function() {
