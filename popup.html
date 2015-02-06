@@ -2,41 +2,62 @@
 <html ng-app="passwger">
   <head>
     <title>Passwger</title>
-    <style>
-      body {
-        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-        font-size: 100%;
-        min-width: 250px;
-      }
 
-      .locked{
-        width: 100%;
-        text-align: center;
-      }
-    </style>
+    <link href="bower_components/angular-material/angular-material.css" rel="stylesheet" />
+
+    <link href="style.css" rel="stylesheet" />
 
     <script src="bower_components/angular/angular.min.js" type="text/javascript"></script>
     <script src="bower_components/underscore/underscore-min.js" type="text/javascript"></script>
     <script src="bower_components/angular-underscore/angular-underscore.min.js" type="text/javascript"></script>
+
+    <script src="bower_components/angular-animate/angular-animate.min.js" type="text/javascript"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js" type="text/javascript"></script>
+    <script src="bower_components/angular-messages/angular-messages.min.js" type="text/javascript"></script>
+    <script src="bower_components/angular-material/angular-material.min.js" type="text/javascript"></script>
+
     <script src="passwger.js" type="text/javascript"></script>
 
   </head>
   <body ng-controller="PasswgerController as pss">
 
-    <div id="locked" ng-show="pss.lock" class="locked">
-      <input type="password" id="lockedPassword" ng-model="pss.lockedPassword" />
-      <button ng-click="pss.checkPassword()">unlock</button>
+    <div class="unlockbackground" id="locked" ng-show="pss.lock" class="locked">
+      <div class="unlockcontaier">
+        <form name="unlockForm" class="setupinput">
+
+          <md-input-container>
+            <input type="password" required name="password" ng-model="pss.lockedPassword" class="form-control" />
+            <div ng-messages="unlockForm.password.$error">
+              <div ng-message="required">Unlock with your password.</div>
+            </div>
+          </md-input-container>
+
+        </form>
+        <md-button ng-click="pss.checkPassword()" class="unlockbtn">Unlock</md-button>
+      </div>
     </div>
+
 
     <div id="unlocked" ng-hide="pss.lock">
 
-      <h1>{{pss.host}}</h1>
+      <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">
+          <span>{{pss.host}}</span>
+        </h1>
+      </md-toolbar>
 
-      <ul ng-show="pss.domainPasswords">
-        <li ng-repeat="entry in pss.domainPasswords" ng-click="pss.injectPassword(entry.id)">
-          {{ entry.name }}
-        </li>
-      </ul>
+      <md-content ng-show="pss.domainPasswords">
+        <md-list>
+          <md-item ng-repeat="entry in pss.domainPasswords">
+            <md-item-content ng-click="pss.injectPassword(entry.id)">
+              <div class="md-tile-content">
+                <h3>{{ entry.name }}</h3>
+              </div>
+            </md-item-content>
+            <md-divider ng-if="!$last"></md-divider>
+          </md-item>
+        </md-list>
+      </md-content>
 
       <em ng-hide="pss.domainPasswords">No password stored for this domain yet.</em>
 

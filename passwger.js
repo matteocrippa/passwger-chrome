@@ -1,6 +1,6 @@
 (function() {
   angular
-    .module('passwger', ['angular-underscore'])
+    .module('passwger', ['angular-underscore','ngMaterial'])
 
   function passwgerController($log, $window, $http, $scope) {
 
@@ -115,7 +115,7 @@
     }
 
     vm.checkPassword = function() {
-      if (vm.lockedPassword.length == 0) {
+      if (!vm.lockedPassword) {
         alert('Please enter your unlock password')
         return
       }
